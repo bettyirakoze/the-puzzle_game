@@ -1,18 +1,30 @@
-const API_URL = "http://localhost:3000/api/scores";
+const API = "https://the-puzzle-backend.onrender.com/api/scores";
 
-// SAVE SCORE TO BACKEND
-export async function saveScore(score) {
-  await fetch(API_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(score)
-  });
+/* ================= GET SCORES ================= */
+export async function getScores() {
+  try {
+    const res = await fetch(API);
+    return await res.json();
+  } catch (err) {
+    console.error("Error loading scores:", err);
+    return [];
+  }
 }
 
-// GET LEADERBOARD FROM BACKEND
-export async function getScores() {
-  const res = await fetch(API_URL);
-  return await res.json();
+/* ================= SAVE SCORE ================= */
+export async function saveScore(score) {
+  try {
+    const res = await fetch(API, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(score)
+    });
+
+    return await res.json();
+  } catch (err) {
+    console.error("Error saving score:", err);
+    return { success: false };
+  }
 }
